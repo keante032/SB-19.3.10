@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
@@ -15,14 +15,14 @@ def homepage():
 
     return render_template('homepage.html', survey=satisfaction_survey)
 
-@app.route('/questions/<int:num>')
-def question():
+@app.route('/questions/<int:qid>')
+def question(qid):
     """Show a form asking the current question, and listing the choices as radio buttons.
     Answering the question should fire off a POST request to /answer."""
 
-    question=satisfaction_survey.questions[num]
+    question = satisfaction_survey.questions[qid]
     
-    return render_template('question.html', question=question, num=num)
+    return render_template('question.html', question=question, question_num=qid)
 
 @app.route('/answer', methods=["POST"])
 def answer():
